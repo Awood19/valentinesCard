@@ -1,0 +1,133 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Fullscreen cover image */
+#cover {
+  position: fixed;
+  inset: 0;
+  cursor: pointer;
+}
+
+#cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hint {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 18px;
+  text-shadow: 0 0 10px black;
+}
+
+/* Hidden class */
+.hidden {
+  display: none;
+}
+
+/* Card background */
+#card {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;   /* plain white background */
+  position: relative;    /* needed for absolute hearts inside */
+  overflow: hidden;      /* hearts won’t spill outside */
+}
+
+
+.card-box {
+  background: white;
+  padding: 60px;          /* bigger padding */
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+  max-width: 500px;       /* wider card */
+  width: 90%;
+  animation: pop 0.6s ease;
+}
+
+
+.card-box h1 {
+  color: #e63946;
+  margin-bottom: 15px;
+}
+
+.card-box p {
+  color: #555;
+  margin: 8px 0;
+}
+
+#question {
+  font-size: 28px;      /* makes the text larger */
+  margin: 20px 0;       /* space above/below */
+  color: #0c0c0c;       /* romantic red */
+  font-weight: bold;
+}
+
+button {
+  margin: 15px;
+  padding: 18px 35px;   /* bigger clickable area */
+  border: none;
+  border-radius: 30px;
+  background: #ff4d6d;
+  color: white;
+  font-size: 20px;      /* bigger text inside button */
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* space between Yes and No */
+}
+
+
+
+#noBtn {
+  position: relative; /* normal flow initially */
+  transition: 0.1s;
+}
+
+
+
+
+
+@keyframes pop {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.heart {
+  position: fixed;
+  bottom: -30px;
+  pointer-events: none;   /* doesn’t block buttons */
+  animation: floatUp 5s linear forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-110vh) scale(1.2);
+    opacity: 0;
+  }
+}
