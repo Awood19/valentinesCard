@@ -1,26 +1,19 @@
-/**
- * Aligns the No button precisely with the invisible placeholder inside the card.
- * Uses Math.floor to prevent sub-pixel rendering shifts.
- */
 function positionNoButton() {
     const placeholder = document.getElementById('no-placeholder');
     const noBtn = document.getElementById('noBtn');
-    
-    // Get location relative to the current viewport
+    if (!placeholder || !noBtn) return;
+
     const rect = placeholder.getBoundingClientRect();
-    
-    // Snaps the button to the exact coordinates of the placeholder
-    noBtn.style.left = Math.floor(rect.left) + 'px';
-    noBtn.style.top = Math.floor(rect.top) + 'px';
-    
-    // Match the dimensions exactly
-    noBtn.style.width = placeholder.offsetWidth + 'px';
-    noBtn.style.height = placeholder.offsetHeight + 'px';
+    const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+    noBtn.style.left = (rect.left + scrollX) + 'px';
+    noBtn.style.top = (rect.top + scrollY) + 'px';
 }
 
-// Initial positioning and responsive adjustments
 window.addEventListener('load', positionNoButton);
 window.addEventListener('resize', positionNoButton);
+setTimeout(positionNoButton, 500);
 
 function sayYes() {
     window.location.href = "card.html";
@@ -28,48 +21,36 @@ function sayYes() {
 
 function sayNo() {
     const btn = document.getElementById('noBtn');
-    const yesBtn = document.getElementById('yesBtn');
     const padding = 50;
     
-    let newX, newY;
-    let isSafe = false;
+    // Quick math to move button immediately without a heavy loop
+    const safeTop = window.innerHeight * 0.3; 
+    const safeHeight = window.innerHeight - safeTop - btn.offsetHeight - padding;
+    const safeWidth = window.innerWidth - btn.offsetWidth - padding;
 
-    // Jumping logic with collision detection for photos and the Yes button
-    while (!isSafe) {
-        newX = Math.random() * (window.innerWidth - btn.offsetWidth - padding);
-        newY = Math.random() * (window.innerHeight - btn.offsetHeight - padding);
-
-        const photoArea = window.innerWidth < 600 ? 170 : 280;
-        const inTopLeft = (newX < photoArea && newY < photoArea);
-        const inTopRight = (newX > window.innerWidth - photoArea && newY < photoArea);
-        
-        const yesRect = yesBtn.getBoundingClientRect();
-        const overlapsYes = (
-            newX < yesRect.right + padding &&
-            newX + btn.offsetWidth > yesRect.left - padding &&
-            newY < yesRect.bottom + padding &&
-            newY + btn.offsetHeight > yesRect.top - padding
-        );
-
-        if (!inTopLeft && !inTopRight && !overlapsYes) {
-            isSafe = true;
-        }
-    }
+    const newX = Math.random() * safeWidth + (padding / 2);
+    const newY = (Math.random() * safeHeight) + safeTop;
 
     btn.style.left = newX + 'px';
     btn.style.top = newY + 'px';
 }
 
-// Heart Rain animation
+// REDUCED SPAWN RATE: Changed from 300ms to 800ms
 setInterval(() => {
   const heart = document.createElement("div");
   heart.className = "heart";
   heart.innerText = "❤️";
   heart.style.left = Math.random() * 100 + "vw"; 
-  const size = 15 + Math.random() * 25;
+  
+  const size = 15 + Math.random() * 20;
   heart.style.fontSize = size + "px";
-  const duration = 3 + Math.random() * 4;
+  
+  // Quicker fall duration
+  const duration = 2.5 + Math.random() * 1.5;
   heart.style.animationDuration = duration + "s";
+  
   document.body.appendChild(heart);
-  setTimeout(() => { heart.remove(); }, 7000);
-}, 300);
+
+  // Instant cleanup
+  setTimeout(() => { heart.remove(); }, duration * 1000);
+}, 800);

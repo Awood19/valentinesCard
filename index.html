@@ -14,12 +14,11 @@
       position: relative;
     }
 
-    /* Corner Images */
     #cover-left, #cover-right {
       position: absolute;
       top: 20px;
-      width: 350px;
-      height: 350px;
+      width: 250px;
+      height: 250px;
       z-index: 1; 
       pointer-events: none; 
     }
@@ -27,7 +26,6 @@
     #cover-right { right: 20px; }
     .cover-img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
-    /* Card Box Container */
     #card {
       min-height: 100dvh;
       display: flex;
@@ -37,7 +35,6 @@
       z-index: 5;
     }
 
-    /* The Bubble */
     .card-box {
       background: white;
       padding: 60px 50px;
@@ -54,33 +51,20 @@
       justify-content: center;
     }
 
-    .card-box h1 { 
-      color: #e63946; 
-      margin-bottom: 10px; 
-      font-size: 2.2rem;
-      white-space: nowrap; 
-    }
+    .card-box h1 { color: #e63946; margin-bottom: 10px; font-size: 2.2rem; white-space: nowrap; }
+    #question { font-size: 28px; margin: 15px 0 25px 0; color: #0c0c0c; font-weight: bold; white-space: nowrap; }
 
-    #question { 
-      font-size: 28px; 
-      margin: 15px 0 25px 0; 
-      color: #0c0c0c; 
-      font-weight: bold; 
-      white-space: nowrap;
-    }
-
-    /* The Button Row - THE FIX: Flex centering ensures vertical alignment */
     #button-space {
       display: flex;
       justify-content: center;
       align-items: center; 
       gap: 30px;
       width: 100%;
-      height: 70px; /* Locked height */
+      height: 80px; 
     }
 
     button {
-      height: 60px; /* Fixed height for pixel-perfect alignment */
+      height: 60px; 
       padding: 0 35px;
       border: none;
       border-radius: 40px;
@@ -93,12 +77,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      line-height: 1; /* Stops font metrics from shifting the button */
+      line-height: 1;
     }
 
     #yesBtn { position: relative; z-index: 10; }
 
-    /* Placeholder MUST match the button height exactly */
     .placeholder {
       width: 220px; 
       height: 60px;
@@ -114,9 +97,20 @@
       height: 60px;
     }
 
-    /* Hearts */
-    .heart { position: fixed; top: -50px; pointer-events: none; z-index: 100; animation: rain 5s linear forwards; }
-    @keyframes rain { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110dvh) rotate(360deg); opacity: 0; } }
+    /* QUICKER ANIMATION: Reduced from 5s to 3s */
+    .heart {
+      position: fixed; 
+      top: -50px;
+      pointer-events: none; 
+      z-index: 100;
+      animation: rain 3s linear forwards; 
+    }
+
+    @keyframes rain {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110dvh) rotate(360deg); opacity: 0; }
+    }
+
     @keyframes pop { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
     @media (max-width: 600px) {
@@ -131,10 +125,8 @@
   </style>
 </head>
 <body>
-
-  <div id="cover-left"><img class="cover-img" src="JMphoto.jpg" alt="Us"></div>
-  <div id="cover-right"><img class="cover-img" src="AWphoto.jpg" alt="Us2"></div>
-
+  <div id="cover-left"><img class="cover-img" src="JMphoto.jpg"></div>
+  <div id="cover-right"><img class="cover-img" src="AWphoto.jpg"></div>
   <div id="card">
     <div class="card-box">
       <h1>Jillian you are my best friend and sunshine</h1>
@@ -145,9 +137,7 @@
       </div>
     </div>
   </div>
-
   <button id="noBtn" onclick="sayNo()">No I hate you!!!</button>
-
   <script src="app.js"></script>
 </body>
 </html>
