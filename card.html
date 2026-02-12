@@ -1,105 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine's Card</title>
-<style>
-  /* Ensure the page takes up the full screen */
-  html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden; /* Prevents scrollbars if images overlap slightly */
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9f9f9;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Valentine's Card</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100dvh; /* Dynamic height for mobile */
+      overflow: hidden; /* Prevents the background from shifting */
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-  /* Container for the background images */
-  .bg-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
+    /* Background Grid of Photos */
+    .bg-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100dvh;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+    }
 
-  .corner-img {
-    position: absolute;
-    width: 50%;   /* Increased to 50% so they meet/overlap in the middle */
-    height: 50%;  
-    object-fit: cover;
-    display: block;
-  }
+    .corner-img {
+      width: 50%;
+      height: 50dvh;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.85); /* Slightly dimmed so text pops */
+    }
 
-  /* Specific Positions */
-  .top-left     { top: 0; left: 0; }
-  .top-right    { top: 0; right: 0; }
-  .bottom-left  { bottom: 0; left: 0; }
-  .bottom-right { bottom: 0; right: 0; object-position: center top; }
+    /* Adjust position for specific images */
+    .bottom-right { object-position: center top; }
 
-  /* Card overlay */
-  .overlay {
-    position: relative;
-    z-index: 10; /* Ensures it is well above the images */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    
-    max-width: 550px;
-    width: 85%;
-    background: rgba(255, 255, 255, 0.92);
-    padding: 40px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-    backdrop-filter: blur(5px); /* Adds a nice frosted glass effect */
-    border: 1px solid rgba(255, 255, 255, 0.3);
-  }
+    /* The Letter Overlay */
+    .overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      
+      max-width: 480px;
+      width: 88%;
+      max-height: 82dvh; /* Ensures it never touches screen edges */
+      overflow-y: auto;  /* Allows reading if text is long */
+      
+      /* Glass-morphism Effect */
+      background: rgba(255, 255, 255, 0.94);
+      padding: 40px 25px;
+      border-radius: 30px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      
+      /* Blur effect for that "frosted glass" look */
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px); 
+      box-sizing: border-box;
+      
+      /* Momentum scrolling for iOS */
+      -webkit-overflow-scrolling: touch;
+    }
 
-  .overlay h1 {
-    color: #e63946;
-    font-size: clamp(24px, 5vw, 36px); /* Responsive font size */
-    margin-bottom: 20px;
-  }
+    /* Custom subtle scrollbar */
+    .overlay::-webkit-scrollbar {
+      width: 5px;
+    }
+    .overlay::-webkit-scrollbar-thumb {
+      background: rgba(230, 57, 70, 0.2);
+      border-radius: 10px;
+    }
 
-  .overlay p {
-    color: #444;
-    font-size: clamp(16px, 4vw, 19px);
-    line-height: 1.6;
-    margin: 10px 0;
-  }
+    .overlay h1 {
+      color: #e63946;
+      font-size: clamp(24px, 7vw, 32px);
+      margin-bottom: 20px;
+      font-weight: 800;
+    }
 
-  .date {
-    font-style: italic;
-    font-size: 0.9em !important;
-    margin-top: 20px !important;
-    color: #888 !important;
-  }
-</style>
+    .overlay p {
+      color: #333;
+      font-size: clamp(16px, 4.5vw, 19px);
+      line-height: 1.6;
+      margin: 15px 0;
+    }
+
+    .overlay strong {
+      color: #e63946;
+      display: block;
+      margin-top: 20px;
+    }
+
+    .date {
+      font-style: italic;
+      font-size: 0.85em !important;
+      margin-top: 30px !important;
+      color: #888 !important;
+      display: block;
+    }
+
+    /* Fade-in animation for the letter */
+    .overlay {
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -45%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+
+    /* Mobile handling for tiny screens */
+    @media (max-width: 360px) {
+      .overlay {
+        padding: 30px 15px;
+        width: 92%;
+      }
+    }
+  </style>
 </head>
 <body>
 
   <div class="bg-container">
-    <img src="VALENTINEPHOTO1.jpg" alt="Top Left" class="corner-img top-left">
-    <img src="VALENTINEPHOTO2.jpg" alt="Top Right" class="corner-img top-right">
-    <img src="VALENTINEPHOTO4.jpg" alt="Bottom Left" class="corner-img bottom-left">
-    <img src="VALENTINEPHOTO3.jpg" alt="Bottom Right" class="corner-img bottom-right">
+    <img src="VALENTINEPHOTO1.jpg" alt="Photo 1" class="corner-img">
+    <img src="VALENTINEPHOTO2.jpg" alt="Photo 2" class="corner-img">
+    <img src="VALENTINEPHOTO4.jpg" alt="Photo 4" class="corner-img">
+    <img src="VALENTINEPHOTO3.jpg" alt="Photo 3" class="corner-img bottom-right">
   </div>
 
   <div class="overlay">
     <h1>Happy Valentine’s Day!</h1>
     <p>Dear Jillian Grace Magato,</p>
+    
     <p>From the first time I saw you, something in me knew you were my second half. 
-        Your presence in my life makes me want to be a better man every day. Every time I think of 
-        my future, the only constant is you. There is no doubt in my mind that my love for you will continue growing. 
-        (Which is impossible because I already love you the most.)</p>
+       Your presence in my life makes me want to be a better man every day. Every time I think of 
+       my future, the only constant is you. There is no doubt in my mind that my love for you will continue growing. 
+       (Which is impossible because I already love you the most.)</p>
     
     <p>Knowing your soul is the greatest privilege I have ever been given.
-        Time has flown by so fast it is hard to believe this is our second Valentine's Day together. 
-        Here is to many more. 
+       Time has flown by so fast it is hard to believe this is our second Valentine's Day together. 
+       Here is to many more. 
     </p>
     
     <p><strong>Tá mo chroí istigh ionat</strong></p>

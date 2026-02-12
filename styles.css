@@ -5,138 +5,100 @@
   font-family: "Segoe UI", sans-serif;
 }
 
-/* Top-left and top-right image containers */
+body {
+  background: #ffffff;
+  min-height: 100dvh;
+  overflow-x: hidden; /* Prevents hearts from creating a side-scroll */
+}
+
+/* Updated Image Containers - Bigger and Responsive */
 #cover-left, #cover-right {
   position: absolute;
-  top: 20px;
+  top: 10px;
+  width: 220px; /* Bigger images as requested */
+  height: 220px;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10; /* on top of card */
+  z-index: 10;
 }
 
-/* Left image: top-left corner */
-#cover-left {
-  left: 20px;
-  width: 300px;   /* bigger size to match card box */
-  height: 300px;
-}
+#cover-left { left: 10px; }
+#cover-right { right: 10px; }
 
-/* Right image: top-right corner */
-#cover-right {
-  right: 20px;
-  width: 300px;   /* same size as left */
-  height: 300px;
-}
-
-/* Image itself */
 .cover-img {
   width: 100%;
   height: 100%;
-  object-fit: contain;  /* show entire image without cropping */
-  object-position: center;
+  object-fit: contain;
   display: block;
-}
-
-/* Hidden class */
-.hidden {
-  display: none;
 }
 
 /* Card container */
 #card {
-  height: 100vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: flex-start;  
-  padding-top: 250px;      /* push card below the images */
-  background: #ffffff;
+  /* Increased padding to 320px to accommodate the bigger 220px images */
+  padding-top: 320px;      
+  background: transparent;
   position: relative;
-  overflow: visible;       /* allows hearts to float outside */
-  z-index: 1;              
+  z-index: 5;
 }
 
 /* Card box */
 .card-box {
   background: white;
-  padding: 60px;
+  padding: 40px 20px;
   border-radius: 25px;
   text-align: center;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
   max-width: 500px;
   width: 90%;
   animation: pop 0.6s ease;
 }
 
-.card-box h1 {
-  color: #e63946;
-  margin-bottom: 15px;
-}
-
-.card-box p {
-  color: #555;
-  margin: 8px 0;
-}
-
-#question {
-  font-size: 28px;
-  margin: 20px 0;
-  color: #0c0c0c;
-  font-weight: bold;
-}
-
-button {
-  margin: 15px;
-  padding: 18px 35px;
-  border: none;
-  border-radius: 30px;
-  background: #ff4d6d;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-#buttons {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-#noBtn {
-  position: relative;
-  transition: 0.1s;
-}
-
-/* Card pop animation */
-@keyframes pop {
-  from {
-    transform: scale(0.7);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* Floating hearts */
+/* Floating hearts - Exactly your original logic */
 .heart {
   position: fixed;
-  bottom: -30px;
+  bottom: -50px;
   pointer-events: none;
   animation: floatUp 5s linear forwards;
-  z-index: 15;  /* above card and images */
+  z-index: 100; /* High z-index to stay above everything */
 }
 
 @keyframes floatUp {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-115vh) scale(1.2); opacity: 0; }
+}
+
+/* Mobile Fix: Scale images down so they don't cover the text on small phones */
+@media (max-width: 500px) {
+  #cover-left, #cover-right {
+    width: 150px;
+    height: 150px;
   }
-  100% {
-    transform: translateY(-110vh) scale(1.2);
-    opacity: 0;
+  #card {
+    padding-top: 180px;
   }
+  .card-box {
+    padding: 30px 15px;
+  }
+  #question {
+    font-size: 22px;
+  }
+}
+
+/* Original Card/Button styles */
+.card-box h1 { color: #e63946; margin-bottom: 15px; }
+.card-box p { color: #555; margin: 8px 0; }
+#question { font-size: 28px; margin: 20px 0; color: #0c0c0c; font-weight: bold; }
+#buttons { margin-top: 20px; display: flex; justify-content: center; gap: 20px; }
+button { padding: 18px 35px; border: none; border-radius: 30px; background: #ff4d6d; color: white; font-size: 20px; cursor: pointer; transition: 0.3s; }
+#noBtn { position: relative; transition: 0.1s; }
+.hidden { display: none; }
+
+@keyframes pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }

@@ -1,71 +1,75 @@
-function openCard() {
-  document.getElementById("cover-left").style.display = "none";
-  document.getElementById("cover-right").style.display = "none";
-  document.getElementById("card").classList.remove("hidden");
+/**
+ * Aligns the No button precisely with the invisible placeholder inside the card.
+ * Uses Math.floor to prevent sub-pixel rendering shifts.
+ */
+function positionNoButton() {
+    const placeholder = document.getElementById('no-placeholder');
+    const noBtn = document.getElementById('noBtn');
+    
+    // Get location relative to the current viewport
+    const rect = placeholder.getBoundingClientRect();
+    
+    // Snaps the button to the exact coordinates of the placeholder
+    noBtn.style.left = Math.floor(rect.left) + 'px';
+    noBtn.style.top = Math.floor(rect.top) + 'px';
+    
+    // Match the dimensions exactly
+    noBtn.style.width = placeholder.offsetWidth + 'px';
+    noBtn.style.height = placeholder.offsetHeight + 'px';
 }
+
+// Initial positioning and responsive adjustments
+window.addEventListener('load', positionNoButton);
+window.addEventListener('resize', positionNoButton);
 
 function sayYes() {
-  window.location.href = "card.html"; // make sure this matches your new file name
+    window.location.href = "card.html";
 }
-
 
 function sayNo() {
-  const noBtn = document.getElementById("noBtn");
+    const btn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const padding = 50;
+    
+    let newX, newY;
+    let isSafe = false;
 
-  // Get window dimensions
-  const winWidth = window.innerWidth;
-  const winHeight = window.innerHeight;
+    // Jumping logic with collision detection for photos and the Yes button
+    while (!isSafe) {
+        newX = Math.random() * (window.innerWidth - btn.offsetWidth - padding);
+        newY = Math.random() * (window.innerHeight - btn.offsetHeight - padding);
 
-  const btnWidth = noBtn.offsetWidth;
-  const btnHeight = noBtn.offsetHeight;
+        const photoArea = window.innerWidth < 600 ? 170 : 280;
+        const inTopLeft = (newX < photoArea && newY < photoArea);
+        const inTopRight = (newX > window.innerWidth - photoArea && newY < photoArea);
+        
+        const yesRect = yesBtn.getBoundingClientRect();
+        const overlapsYes = (
+            newX < yesRect.right + padding &&
+            newX + btn.offsetWidth > yesRect.left - padding &&
+            newY < yesRect.bottom + padding &&
+            newY + btn.offsetHeight > yesRect.top - padding
+        );
 
-  // Define safe zones (top-left and top-right images)
-  const imgMargin = 20;       // space around the images
-  const imgSize = 250;        // size of the images
+        if (!inTopLeft && !inTopRight && !overlapsYes) {
+            isSafe = true;
+        }
+    }
 
-  // Safe zones coordinates
-  const safeZones = [
-    { x: 0, y: 0, width: imgSize + imgMargin, height: imgSize + imgMargin }, // top-left
-    { x: winWidth - imgSize - imgMargin, y: 0, width: imgSize + imgMargin, height: imgSize + imgMargin } // top-right
-  ];
-
-  let x, y;
-  let tries = 0;
-
-  do {
-    x = Math.random() * (winWidth - btnWidth);
-    y = Math.random() * (winHeight - btnHeight);
-    tries++;
-
-    // Stop if too many attempts to avoid infinite loop
-    if (tries > 100) break;
-
-    // Check if x,y overlaps any safe zone
-  } while (safeZones.some(zone => 
-      x < zone.x + zone.width &&
-      x + btnWidth > zone.x &&
-      y < zone.y + zone.height &&
-      y + btnHeight > zone.y
-  ));
-
-  // Apply new position
-  noBtn.style.position = "fixed"; // relative to viewport
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
+    btn.style.left = newX + 'px';
+    btn.style.top = newY + 'px';
 }
 
-
-// Floating hearts
+// Heart Rain animation
 setInterval(() => {
   const heart = document.createElement("div");
   heart.className = "heart";
   heart.innerText = "❤️";
-
-  heart.style.left = Math.random() * window.innerWidth + "px";
-  const size = 20 + Math.random() * 20;
+  heart.style.left = Math.random() * 100 + "vw"; 
+  const size = 15 + Math.random() * 25;
   heart.style.fontSize = size + "px";
-
+  const duration = 3 + Math.random() * 4;
+  heart.style.animationDuration = duration + "s";
   document.body.appendChild(heart);
-
-  setTimeout(() => heart.remove(), 5000);
+  setTimeout(() => { heart.remove(); }, 7000);
 }, 300);

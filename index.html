@@ -2,35 +2,152 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Jills Valentine Card</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="app.js" defer></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
+
+    body {
+      background: #ffffff;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Corner Images */
+    #cover-left, #cover-right {
+      position: absolute;
+      top: 20px;
+      width: 350px;
+      height: 350px;
+      z-index: 1; 
+      pointer-events: none; 
+    }
+    #cover-left { left: 20px; }
+    #cover-right { right: 20px; }
+    .cover-img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+    /* Card Box Container */
+    #card {
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;  
+      padding-top: 320px; 
+      z-index: 5;
+    }
+
+    /* The Bubble */
+    .card-box {
+      background: white;
+      padding: 60px 50px;
+      border-radius: 40px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      width: auto;
+      min-width: 500px; 
+      max-width: 95%;
+      animation: pop 0.6s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-box h1 { 
+      color: #e63946; 
+      margin-bottom: 10px; 
+      font-size: 2.2rem;
+      white-space: nowrap; 
+    }
+
+    #question { 
+      font-size: 28px; 
+      margin: 15px 0 25px 0; 
+      color: #0c0c0c; 
+      font-weight: bold; 
+      white-space: nowrap;
+    }
+
+    /* The Button Row - THE FIX: Flex centering ensures vertical alignment */
+    #button-space {
+      display: flex;
+      justify-content: center;
+      align-items: center; 
+      gap: 30px;
+      width: 100%;
+      height: 70px; /* Locked height */
+    }
+
+    button {
+      height: 60px; /* Fixed height for pixel-perfect alignment */
+      padding: 0 35px;
+      border: none;
+      border-radius: 40px;
+      background: #ff4d6d;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 1; /* Stops font metrics from shifting the button */
+    }
+
+    #yesBtn { position: relative; z-index: 10; }
+
+    /* Placeholder MUST match the button height exactly */
+    .placeholder {
+      width: 220px; 
+      height: 60px;
+      visibility: hidden;
+      display: block;
+    }
+
+    #noBtn { 
+      position: fixed; 
+      z-index: 99999 !important; 
+      transition: transform 0.1s; 
+      width: 220px; 
+      height: 60px;
+    }
+
+    /* Hearts */
+    .heart { position: fixed; top: -50px; pointer-events: none; z-index: 100; animation: rain 5s linear forwards; }
+    @keyframes rain { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110dvh) rotate(360deg); opacity: 0; } }
+    @keyframes pop { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    @media (max-width: 600px) {
+      #cover-left, #cover-right { width: 140px; height: 140px; top: 10px; }
+      #card { padding-top: 180px; }
+      .card-box { min-width: 90%; padding: 40px 15px; }
+      .card-box h1 { font-size: 1.3rem; white-space: normal; }
+      #question { font-size: 18px; white-space: normal; }
+      .placeholder, #noBtn, button { height: 50px; }
+      .placeholder, #noBtn { width: 180px; font-size: 16px; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Top-left cover image -->
-  <div id="cover-left">
-    <img class="cover-img" src="JMphoto.jpg" alt="Us">
-  </div>
+  <div id="cover-left"><img class="cover-img" src="JMphoto.jpg" alt="Us"></div>
+  <div id="cover-right"><img class="cover-img" src="AWphoto.jpg" alt="Us2"></div>
 
-  <!-- Top-right cover image -->
-  <div id="cover-right">
-    <img class="cover-img" src="AWphoto.jpg" alt="Us2">
-  </div>
-
-  <!-- Valentine card (hidden initially) -->
-  <div id="card" class="hidden">
+  <div id="card">
     <div class="card-box">
       <h1>Jillian you are my best friend and sunshine</h1>
       <p id="question">Will you be my Valentine?</p>
-      <div id="buttons">
-        <button onclick="sayYes()">Yes Please!!!</button>
-        <button onclick="sayNo()" id="noBtn">No I hate you!!!</button>
+      <div id="button-space">
+        <button id="yesBtn" onclick="sayYes()">Yes Please!!!</button>
+        <div class="placeholder" id="no-placeholder"></div>
       </div>
-      <p id="response" class="hidden"></p>
     </div>
   </div>
 
+  <button id="noBtn" onclick="sayNo()">No I hate you!!!</button>
+
+  <script src="app.js"></script>
 </body>
 </html>
