@@ -9,26 +9,28 @@
 </head>
 <body>
 
-  <!-- First screen: picture -->
-  <div id="cover" onclick="openCard()">
-    <img src="photo.jpg" alt="Us">
-    <p class="hint">Click anywhere</p>
+  <!-- Top-left cover image -->
+  <div id="cover-left">
+    <img class="cover-img" src="JMphoto.jpg" alt="Us">
   </div>
 
-  <!-- Valentine card -->
+  <!-- Top-right cover image -->
+  <div id="cover-right">
+    <img class="cover-img" src="AWphoto.jpg" alt="Us2">
+  </div>
+
+  <!-- Valentine card (hidden initially) -->
   <div id="card" class="hidden">
     <div class="card-box">
-      <h1>Happy Valentine’s Day Beautiful</h1>
-
-  <p id="question">Will you be mine?</p>
-
-  <div id="buttons">
-    <button onclick="sayYes()">Yes Please!!!</button>
-    <button onclick="sayNo()" id="noBtn">No I hate you!!!</button>
+      <h1>Jillian you are my best friend and sunshine</h1>
+      <p id="question">Will you be my Valentine?</p>
+      <div id="buttons">
+        <button onclick="sayYes()">Yes Please!!!</button>
+        <button onclick="sayNo()" id="noBtn">No I hate you!!!</button>
+      </div>
+      <p id="response" class="hidden"></p>
+    </div>
   </div>
-
-  <p id="response" class="hidden"></p>
-</div>
 
 </body>
 </html>

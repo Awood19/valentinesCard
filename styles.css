@@ -5,27 +5,37 @@
   font-family: "Segoe UI", sans-serif;
 }
 
-/* Fullscreen cover image */
-#cover {
-  position: fixed;
-  inset: 0;
-  cursor: pointer;
+/* Top-left and top-right image containers */
+#cover-left, #cover-right {
+  position: absolute;
+  top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10; /* on top of card */
 }
 
-#cover img {
+/* Left image: top-left corner */
+#cover-left {
+  left: 20px;
+  width: 300px;   /* bigger size to match card box */
+  height: 300px;
+}
+
+/* Right image: top-right corner */
+#cover-right {
+  right: 20px;
+  width: 300px;   /* same size as left */
+  height: 300px;
+}
+
+/* Image itself */
+.cover-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-}
-
-.hint {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  text-align: center;
-  color: white;
-  font-size: 18px;
-  text-shadow: 0 0 10px black;
+  object-fit: contain;  /* show entire image without cropping */
+  object-position: center;
+  display: block;
 }
 
 /* Hidden class */
@@ -33,29 +43,30 @@
   display: none;
 }
 
-/* Card background */
+/* Card container */
 #card {
   height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background: #ffffff;   /* plain white background */
-  position: relative;    /* needed for absolute hearts inside */
-  overflow: hidden;      /* hearts won’t spill outside */
+  align-items: flex-start;  
+  padding-top: 250px;      /* push card below the images */
+  background: #ffffff;
+  position: relative;
+  overflow: visible;       /* allows hearts to float outside */
+  z-index: 1;              
 }
 
-
+/* Card box */
 .card-box {
   background: white;
-  padding: 60px;          /* bigger padding */
+  padding: 60px;
   border-radius: 25px;
   text-align: center;
   box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-  max-width: 500px;       /* wider card */
+  max-width: 500px;
   width: 90%;
   animation: pop 0.6s ease;
 }
-
 
 .card-box h1 {
   color: #e63946;
@@ -68,20 +79,20 @@
 }
 
 #question {
-  font-size: 28px;      /* makes the text larger */
-  margin: 20px 0;       /* space above/below */
-  color: #0c0c0c;       /* romantic red */
+  font-size: 28px;
+  margin: 20px 0;
+  color: #0c0c0c;
   font-weight: bold;
 }
 
 button {
   margin: 15px;
-  padding: 18px 35px;   /* bigger clickable area */
+  padding: 18px 35px;
   border: none;
   border-radius: 30px;
   background: #ff4d6d;
   color: white;
-  font-size: 20px;      /* bigger text inside button */
+  font-size: 20px;
   cursor: pointer;
   transition: 0.3s;
 }
@@ -90,20 +101,15 @@ button {
   margin-top: 20px;
   display: flex;
   justify-content: center;
-  gap: 20px; /* space between Yes and No */
+  gap: 20px;
 }
 
-
-
 #noBtn {
-  position: relative; /* normal flow initially */
+  position: relative;
   transition: 0.1s;
 }
 
-
-
-
-
+/* Card pop animation */
 @keyframes pop {
   from {
     transform: scale(0.7);
@@ -114,11 +120,14 @@ button {
     opacity: 1;
   }
 }
+
+/* Floating hearts */
 .heart {
   position: fixed;
   bottom: -30px;
-  pointer-events: none;   /* doesn’t block buttons */
+  pointer-events: none;
   animation: floatUp 5s linear forwards;
+  z-index: 15;  /* above card and images */
 }
 
 @keyframes floatUp {

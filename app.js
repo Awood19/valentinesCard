@@ -1,52 +1,71 @@
 function openCard() {
-  document.getElementById("cover").style.display = "none";
+  document.getElementById("cover-left").style.display = "none";
+  document.getElementById("cover-right").style.display = "none";
   document.getElementById("card").classList.remove("hidden");
 }
 
 function sayYes() {
-  document.getElementById("response").textContent =
-    "I am the luckiest man in the World";
-  document.getElementById("response").classList.remove("hidden");
-
-  document.getElementById("buttons").style.display = "none";
+  window.location.href = "card.html"; // make sure this matches your new file name
 }
 
 
 function sayNo() {
   const noBtn = document.getElementById("noBtn");
-  const cardBox = document.querySelector(".card-box");
 
-  // Make it absolute only after first click
-  noBtn.style.position = "absolute";
+  // Get window dimensions
+  const winWidth = window.innerWidth;
+  const winHeight = window.innerHeight;
 
-  const boxRect = cardBox.getBoundingClientRect();
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
 
-  // leave some margin so it stays fully visible
-  const margin = 10;
+  // Define safe zones (top-left and top-right images)
+  const imgMargin = 20;       // space around the images
+  const imgSize = 250;        // size of the images
 
-  const x = Math.random() * (boxRect.width - noBtn.offsetWidth - margin*2) + margin;
-  const y = Math.random() * (boxRect.height - noBtn.offsetHeight - margin*2) + margin;
+  // Safe zones coordinates
+  const safeZones = [
+    { x: 0, y: 0, width: imgSize + imgMargin, height: imgSize + imgMargin }, // top-left
+    { x: winWidth - imgSize - imgMargin, y: 0, width: imgSize + imgMargin, height: imgSize + imgMargin } // top-right
+  ];
 
+  let x, y;
+  let tries = 0;
+
+  do {
+    x = Math.random() * (winWidth - btnWidth);
+    y = Math.random() * (winHeight - btnHeight);
+    tries++;
+
+    // Stop if too many attempts to avoid infinite loop
+    if (tries > 100) break;
+
+    // Check if x,y overlaps any safe zone
+  } while (safeZones.some(zone => 
+      x < zone.x + zone.width &&
+      x + btnWidth > zone.x &&
+      y < zone.y + zone.height &&
+      y + btnHeight > zone.y
+  ));
+
+  // Apply new position
+  noBtn.style.position = "fixed"; // relative to viewport
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
 }
 
-// floating hearts
+
+// Floating hearts
 setInterval(() => {
   const heart = document.createElement("div");
   heart.className = "heart";
   heart.innerText = "❤️";
 
-  // random horizontal position
   heart.style.left = Math.random() * window.innerWidth + "px";
-
-  // random size
   const size = 20 + Math.random() * 20;
   heart.style.fontSize = size + "px";
 
-  // append to body
   document.body.appendChild(heart);
 
-  // remove after animation
   setTimeout(() => heart.remove(), 5000);
 }, 300);
